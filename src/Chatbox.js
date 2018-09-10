@@ -4,14 +4,13 @@ import './style.css';
 import './Chatbox.css';
 import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {NotificationManager} from 'react-notifications';
+import {LabelBar} from "./LabelBar";
+import {Input, Divider, Button } from 'semantic-ui-react'
+
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-
-/**
- * This layout demonstrates how to use a grid with a dynamic number of elements.
- */
 class Chatbox extends React.PureComponent {
     static defaultProps = {
         className: "layout",
@@ -35,7 +34,6 @@ class Chatbox extends React.PureComponent {
             newCounter: 0,
             value: ""
         };
-
         this.onAddItem = this.onAddItem.bind(this);
         this.onBreakpointChange = this.onBreakpointChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -52,31 +50,30 @@ class Chatbox extends React.PureComponent {
         const i = el.add ? "+" : el.i;
         return (
             <div key={i} data-grid={el}>
-                {el.add ?
-                    (<span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>)
-                    : (<iframe className="chat" src={"http://twitch.tv/chat/embed?channel="+el.name+"&popout_chat=true"}/>)}
+                <span>{el.name} - {el.i} - {el.w}:{el.h}</span>
+                {/*<iframe className="chat" src={"http://twitch.tv/chat/embed?channel="+el.name+"&popout_chat=true"}/>*/}
                 <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(this, i)}>x</span>
             </div>
         );
     }
 
     onAddItem() {
-        /*eslint no-console: 0*/
         if (this.state.value !== ""){
             console.log("adding", "n" + this.state.newCounter);
             console.log("adding", "n" + this.state.value);
             this.setState({
-                // Add a new item. It must have a unique key!
                 items: this.state.items.concat({
                     i: "n" + this.state.newCounter,
                     name: this.state.value,
                     x: (this.state.items.length * 2) % (this.state.cols || 12),
                     y: Infinity, // puts it at the bottom
-                    w: 2,
-                    h: 2
+                    w: 3,
+                    h: 4,
+                    minW: 3,
+                    minH: 4
                 }),
-                // Increment the counter to ensure key is always unique.
-                newCounter: this.state.newCounter + 1
+                newCounter: this.state.newCounter + 1,
+                value: ""
             });
         } else {
             console.log("empty");
@@ -93,8 +90,8 @@ class Chatbox extends React.PureComponent {
     }
 
     onLayoutChange(layout) {
-        // this.props.onLayoutChange(layout);
-        // this.setState({ layout: layout });
+        this.props.onLayoutChange(layout);
+        this.setState({ layout: layout });
     }
 
     onRemoveItem(i) {
@@ -114,10 +111,7 @@ class Chatbox extends React.PureComponent {
     render() {
         return (
             <div>
-                <NotificationContainer/>
-                <input type="text" onChange={this.handleChange} />
-                <button onClick={this.onAddItem}>Add Item</button>
-                <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange} onBreakpointChange={this.onBreakpointChange}{...this.props}>
+                <ResponsiveReactGridLayout onLayoutChange={() => this.onLayoutChange} onBreakpointChange={() =>this.onBreakpointChange}{...this.props}>
                     {_.map(this.state.items, el => this.createElement(el))}
                 </ResponsiveReactGridLayout>
             </div>
