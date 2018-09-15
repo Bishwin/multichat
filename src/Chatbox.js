@@ -51,7 +51,7 @@ class Chatbox extends React.PureComponent {
         return (
             <div key={i} data-grid={el}>
                 <span>{el.name} - {el.i} - {el.w}:{el.h}</span>
-                {/*<iframe className="chat" src={"http://twitch.tv/chat/embed?channel="+el.name+"&popout_chat=true"}/>*/}
+                <iframe className="chat" src={"http://twitch.tv/chat/embed?channel="+el.name+"&popout_chat=true"}/>
                 <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(this, i)}>x</span>
             </div>
         );
