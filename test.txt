@@ -8,4 +8,4 @@ avit
 awesomepanda
 bira
 bira
-blinks
+blinks-no
