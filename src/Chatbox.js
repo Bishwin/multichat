@@ -5,9 +5,7 @@ import './Chatbox.css';
 import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
 import {NotificationManager} from 'react-notifications';
-import {LabelBar} from "./LabelBar";
-import {Input, Divider, Button } from 'semantic-ui-react'
-
+import {Button, Input} from "semantic-ui-react";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -34,6 +32,7 @@ class Chatbox extends React.PureComponent {
             newCounter: 0,
             value: ""
         };
+
         this.onAddItem = this.onAddItem.bind(this);
         this.onBreakpointChange = this.onBreakpointChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -111,6 +110,9 @@ class Chatbox extends React.PureComponent {
     render() {
         return (
             <div>
+                <Input action={<Button onClick={this.onAddItem} content={"Add Item"}/>}
+                       onChange={this.handleChange} value={this.state.value} placeholder='Add'
+                />
                 <ResponsiveReactGridLayout onLayoutChange={() => this.onLayoutChange} onBreakpointChange={() =>this.onBreakpointChange}{...this.props}>
                     {_.map(this.state.items, el => this.createElement(el))}
                 </ResponsiveReactGridLayout>
